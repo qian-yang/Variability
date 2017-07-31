@@ -23,7 +23,6 @@ MCMC (emcee.pro debug) <br>
 TODO (July 30, 2017) <br>
 ----
 Structure function (compare with previous works) <br>
-Statistic the lag between different continuum bands <br>
 Continuum lag (no transfer function) <br>
 DRW in mag, while scale in flux <br>
 Consider host galaxy contribution (not change), which is different from emission line contribution (has lag and transfer function) <br>

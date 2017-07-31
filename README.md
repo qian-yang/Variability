@@ -2,14 +2,14 @@ Variability
 ====
 This is an IDL package to analysis QSO variability and do photometric reverberation mapping (photo-RM) <br>
 
-Version
-----
-Qian Yang <br>
-July 25, 2017 <br>
-
 References
 ----
 The core code are learnt from the JAVELIN code (please see https://bitbucket.org/nye17/javelin) and the Python emcee package (http://dan.iel.fm/emcee/current/). There is a modified version of JAVELIN code, including some features such as, adding structure function and changing the transfer functions by Haowen (please see https://github.com/pkuzhw387/Modified_JAVELIN)<br>
+
+Current Version
+----
+Qian Yang <br>
+July 30, 2017 <br>
 
 Already done (July 30, 2017)
 ----

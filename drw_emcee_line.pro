@@ -1,3 +1,4 @@
+; todo: need to debug, July 30, 2017
 pro drw_emcee_line
   print, SYSTIME()
   ; ======== box zoom input ========

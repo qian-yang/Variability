@@ -35,10 +35,16 @@
 
 pro unpack_params, p, sigma=sigma, tau=tau, lag=lag, width=width, A=A, B=B, t1=t1, t2=t2, kargs=kargs
   ; log
-  if check_args(kargs, 'lg') then p = 10.d^p
-  if check_args(kargs, 'ln') then p = exp(p)
-  sigma = p[0]
-  tau = p[1]
+  if check_args(kargs, 'lg') then begin
+    sigma = 10.d^p[0]
+    tau = 10.d^p[1]
+    ; p = 10.d^p
+  endif
+  if check_args(kargs, 'ln') then begin
+    sigma = exp(p[0])
+    tau = exp(p[1])
+    ; p = exp(p)
+  endif
   if check_args(kargs, 'line') then begin
     lag = p[2]
     width = p[3]

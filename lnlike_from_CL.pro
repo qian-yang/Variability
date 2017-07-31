@@ -12,20 +12,26 @@ function check_symm, S, name
   return, res
 end
 
+function tri_determ, Matrix, inddiag
+  ;similar to chodet_from_tri in cholesky_utils.py
+  U = Matrix
+  LA_CHOLDC, U, STATUS = test
+  U_part = U[inddiag]
+  det_C_ln = 2.0 * total(alog(U_part))
+  return, det_C_ln
+end
+
 ;+
 ; Name: lnlike_from_CL
-; Description: similar to _lnlike_from_U in lcmodel.py in JAVELIN
+; Description: similar to _lnlike_from_U in lcmodel.py in Javelin
 ; C = U^T U, where U is a upper triangular arrays calculated from LA_CHOLDC
 ; Verison: Qian Yang, July 25, 2017
 ;
 pro lnlike_from_CL, y, C, L, inddiag, logL = logL
   ; |C|
   det_C = LA_DETERM(C, /CHECK)
-  if ((det_C eq 0) or FINITE(det_C,/INFINITY) or (det_C le 0.0)) then begin
-    U = C
-    LA_CHOLDC, U, STATUS = test
-    U_part = U[inddiag]
-    det_C_ln = 2.0 * total(alog(U_part))
+  if ((det_C le 0.0) or FINITE(det_C, /INFINITY)) then begin
+    det_C_ln = tri_determ(C, inddiag)
   endif else begin
     ; ln|C|
     det_C_ln = alog(det_C) ; ==> the first item
@@ -46,16 +52,21 @@ pro lnlike_from_CL, y, C, L, inddiag, logL = logL
       Cp = Cp[0]
       det_Cp = Cp
       d = (1.0/Cp) * Lr
+      det_Cp_ln = alog(det_Cp) ; ==> the second item
     endif else if (n gt 1) then begin
-      det_Cp = LA_DETERM(Cp)
+      det_Cp = LA_DETERM(Cp, /CHECK)
+      if ((det_Cp le 0.0) or FINITE(det_Cp, /INFINITY)) then begin
+        det_Cp_ln = tri_determ(Cp, inddiag)
+      endif else begin
+        det_Cp_ln = alog(det_Cp)
+      endelse
       ; Cp d = L^T ==> d = Cp^-1 L^T
       Cp_copy = Cp
-      LA_CHOLDC, Cp_copy
+      LA_CHOLDC, Cp_copy, STATUS = test
       d = LA_CHOLSOL(Cp_copy, Lr)
     endif else begin
       print, "Warning: n_elements(Cp) < 0"
     endelse
-    det_Cp_ln = alog(det_Cp) ; ==> the second item
     ; e = C^-1 L Cq L^T C^-1 y = (C^-1 L) (Cq L^T) (C^-1 y) = b d a
     e = b ## d ## a
     ; f = C^-1 y - C^-1 L C_p^-1 L^T C^-1 y = C_v^-1 y
@@ -68,5 +79,6 @@ pro lnlike_from_CL, y, C, L, inddiag, logL = logL
   endif else begin
     logL = -999.0
   endelse
+  if (FINITE(logL, /INFINITY) or FINITE(logL, /NAN)) then logL = -999.0
   return
 end

@@ -31,7 +31,7 @@
 ;   add lprior probabiity
 ;-
 
-function ln_lprior, sigma, tau, pf, tt=tt, data=data, kargs=kargs
+function ln_lprior_cont, sigma, tau, pf, tt=tt, data=data, kargs=kargs
   my_neg_inf = -1.0e+300
   my_pos_inf = 1.0e+300
   tau_floor = 1.e-6
@@ -72,6 +72,19 @@ function ln_lprior, sigma, tau, pf, tt=tt, data=data, kargs=kargs
   return, lnpr
 end
 
+function ln_lprior_line, rj, lag, width, lagtobaseline=lagtobaseline, widtobaseline=widtobaseline
+  my_neg_inf = -1.0e+300
+  my_pos_inf = 1.0e+300
+  if ~keyword_set(lagtobaseline) then lagtobaseline=0.3
+  if ~keyword_set(widtobaseline) then widtobaseline=0.2
+  lnpr = 0
+  if (abs(lag) gt rj) then begin
+    lnpr -= alog(abs(lag)/(lagtobaseline*rj))
+    lnpr -= alog(abs(width)/(widtobaseline*rj))
+  endif
+  return, lnpr
+end
+
 function get_lnp, p, data, kargs=kargs
   ; unpack data
   tarr = data.tarr
@@ -80,6 +93,7 @@ function get_lnp, p, data, kargs=kargs
   Err = data.Err
   inddiag = data.inddiag
   tt = data.tt
+  rj = data.rj
   ; unpack params
   unpack_params, p, sigma=sigma, tau=tau, lag=lag, width=width, A=A, B=B, t1=t1, t2=t2, kargs=kargs
   get_S, tarr, Larr, sigma, tau, A=A, t1=t1, t2=t2, B=B, SS = SS
@@ -87,7 +101,12 @@ function get_lnp, p, data, kargs=kargs
   lnLike_from_CL, y, C, Larr, inddiag, logL = logL
   if check_args(kargs, 'lprior') then begin
     pf = kargs.pf
-    lnpr = ln_lprior(sigma, tau, pf, tt=tt, data=data, kargs=kargs)
+    lnpr = ln_lprior_cont(sigma, tau, pf, tt=tt, data=data, kargs=kargs)
+    logL += lnpr
+  endif
+  if check_args(kargs, 'lp_line') then begin
+    pf = kargs.pf
+    lnpr = ln_lprior_line(rj, lag, width)
     logL += lnpr
   endif
   return, logL

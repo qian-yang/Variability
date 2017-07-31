@@ -1,6 +1,6 @@
 Variability
 ====
-This is a IDL package to analysis QSO variability and do photometric reverberation mapping (photo-RM) <br>
+This is an IDL package to analysis QSO variability and do photometric reverberation mapping (photo-RM) <br>
 
 Version
 ----
@@ -20,7 +20,7 @@ MCMC using Metropolis-Hastings method (in drw_mcmc.pro) <br>
 MCMC using method learn from emcee (in emcee.pro) <br>
 MCMC (emcee.pro debug) <br>
 
-TODO (July 29, 2017) <br>
+TODO (July 30, 2017) <br>
 ----
 Structure function (compare with previous works) <br>
 Statistic the lag between different continuum bands <br>

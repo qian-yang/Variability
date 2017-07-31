@@ -5,7 +5,7 @@ pro drw_emcee
   nchain = 100
   nburn = 100
   ; ===============================
-  file = 'r2.txt'
+  file = 'r.txt'
   read_data, file, zydata = data
   ; mcmc
   ndim = 2.0

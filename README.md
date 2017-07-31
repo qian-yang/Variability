@@ -13,11 +13,11 @@ July 30, 2017 <br>
 
 Already done (July 30, 2017)
 ----
-Damped random walk (DRW) model QSO continuum variability (core in lnlike_from_CL.pro) <br>
-Continuum + emission line with lag model (core in get_S.pro) <br>
-Maximum the probability, using zoom in boxes (in drw_zoomin.pro) <br>
-MCMC using Metropolis-Hastings method (in drw_mcmc.pro) <br>
-MCMC using method learn from emcee (in emcee.pro) <br>
+Damped random walk (DRW) model QSO continuum variability (probability calculated in lnlike_from_CL.pro) <br>
+Continuum + emission line with lag model (covariance matrix in get_S.pro) <br>
+Maximum the probability, using zoom in boxes (run drw_zoomin.pro) <br>
+MCMC using Metropolis-Hastings method (run drw_mcmc.pro) <br>
+MCMC using method learn from emcee (run drw_emcee.pro) <br>
 MCMC (emcee.pro debug) <br>
 
 TODO (July 30, 2017) <br>
